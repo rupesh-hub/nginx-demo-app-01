@@ -27,7 +27,7 @@ jobs:
           set -e
 
           # Clone or pull the latest code
-          cd /home/${VM_USER}
+          cd /tmp
           if [ -d "fullstack" ]; then
             cd fullstack
             git fetch --all
@@ -45,7 +45,8 @@ jobs:
 
           # Move the application files to /var/www/fullstack
           sudo rm -rf /var/www/fullstack/*
-          sudo mv fullstack /home/${VM_USER}/var/www
+          sudo cp -r frontend/dist /var/www/fullstack/frontend
+          sudo cp -r backend /var/www/fullstack/backend
 
           # Update Nginx configuration
           sudo rm -f /etc/nginx/conf.d/fullstack.conf
