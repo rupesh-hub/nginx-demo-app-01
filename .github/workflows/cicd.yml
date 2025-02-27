@@ -56,6 +56,9 @@ jobs:
           sudo nginx -t
           sudo systemctl reload nginx
 
+          # Change ownership of /var/www/fullstack to the current user
+          sudo chown -R $VM_USER:$VM_USER /var/www/fullstack
+
           # Install backend dependencies and start the server
           cd /var/www/fullstack/backend
           npm install
