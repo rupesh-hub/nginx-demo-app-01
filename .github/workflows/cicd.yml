@@ -51,6 +51,7 @@ jobs:
           # Ensure correct ownership and permissions
           sudo chown -R $VM_USER:$VM_USER /var/www/fullstack
           sudo chmod -R 755 /var/www/fullstack
+          sudo chmod -R 777 /var/www/fullstack/backend  # Give full access to backend folder
 
           # Update Nginx configuration
           sudo rm -f /etc/nginx/conf.d/fullstack.conf
