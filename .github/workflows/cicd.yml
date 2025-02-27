@@ -43,15 +43,11 @@ jobs:
           npm run build
           cd ..
 
-          # Create deployment folder 
-          cd /var/www
-          sudo rm -rf fullstack
-          sudo mkdir -p fullstack
-
           # Move the application files to /var/www/fullstack
           sudo rm -rf /var/www/fullstack/*
-          sudo cp -r frontend/dist /var/www/fullstack/frontend
-          sudo cp -r backend /var/www/fullstack/backend
+          sudo mv fullstack /var/www
+          # sudo cp -r frontend/dist /var/www/fullstack/frontend
+          # sudo cp -r backend /var/www/fullstack/backend
 
           # Update Nginx configuration
           sudo rm -f /etc/nginx/conf.d/fullstack.conf
