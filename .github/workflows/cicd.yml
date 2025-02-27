@@ -13,7 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Add ssh key
+      - name: Add SSH key
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.VM_SSH_KEY }}
@@ -37,6 +37,12 @@ jobs:
             cd fullstack
           fi
 
+          # Build the frontend
+          cd frontend
+          npm install
+          npm run build
+          cd ..
+
           # Move the application files to /var/www/fullstack
           sudo rm -rf /var/www/fullstack/*
           sudo cp -r frontend/dist /var/www/fullstack/frontend
@@ -49,6 +55,11 @@ jobs:
           # Validate and reload Nginx
           sudo nginx -t
           sudo systemctl reload nginx
+
+          # Install backend dependencies and start the server
+          cd /var/www/fullstack/backend
+          npm install
+          PORT=3000 npm run dev &
 
           echo "Deployment successful!"
           EOF
