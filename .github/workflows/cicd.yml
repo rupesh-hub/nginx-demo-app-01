@@ -64,7 +64,9 @@ jobs:
           # Install backend dependencies and start the server
           cd /var/www/fullstack/backend
           npm install
-          # PORT=3000 npm run dev &
+
+          # Start the backend server in a persistent way
+          nohup npm run dev > backend.log 2>&1 &
 
           echo "Deployment successful!"
           EOF

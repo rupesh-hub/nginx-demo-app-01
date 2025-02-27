@@ -9,7 +9,7 @@ function App() {
   useEffect(() => {
     (async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/message")
+        const response = await axios.get("http://51.120.247.60:3000/api/message")
         setMessage(response?.data?.message || "");
         setError(null); 
       } catch (error) {
