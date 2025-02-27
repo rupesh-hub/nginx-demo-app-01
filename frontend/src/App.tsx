@@ -14,7 +14,6 @@ function App() {
         setError(null); 
       } catch (error) {
         console.error(error);
-        setMessage("An error occurred!");
         setError("Error: Failed to fetch data from the backend."); 
       } finally {
         setLoading(false);
