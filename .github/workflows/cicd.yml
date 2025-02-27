@@ -13,6 +13,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Debug SSH Key (Troubleshooting Only)
+        run: |
+          echo "SSH Key (Base64): ${{ secrets.VM_SSH_KEY }}"
+
       - name: Decode SSH Key
         run: |
           echo "${{ secrets.VM_SSH_KEY }}" | base64 --decode > id_rsa
