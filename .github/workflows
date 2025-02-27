@@ -1,0 +1,52 @@
+name: Deploy to Azure VM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Copy files to Azure VM and update Nginx
+        env:
+          VM_IP: ${{ secrets.VM_IP }}
+          VM_USER: ${{ secrets.VM_USER }}
+          VM_SSH_KEY: ${{ secrets.VM_SSH_KEY }}
+        run: |
+          # SSH into the VM and deploy the application
+          ssh -o StrictHostKeyChecking=no -i $VM_SSH_KEY $VM_USER@$VM_IP << 'EOF'
+          # Stop the script if any command fails
+          set -e
+
+          # Clone or pull the latest code
+          cd /tmp
+          if [ -d "fullstack" ]; then
+            cd fullstack
+            git fetch --all
+            git reset --hard origin/main
+          else
+            git clone https://github.com/your-username/your-repo.git fullstack
+            cd fullstack
+          fi
+
+          # Move the application files to /var/www/fullstack
+          sudo rm -rf /var/www/fullstack/*
+          sudo cp -r frontend/dist /var/www/fullstack/frontend
+          sudo cp -r backend /var/www/fullstack/backend
+
+          # Update Nginx configuration
+          sudo rm -f /etc/nginx/conf.d/fullstack.conf
+          sudo cp fullstack.conf /etc/nginx/conf.d/
+
+          # Validate and reload Nginx
+          sudo nginx -t
+          sudo systemctl reload nginx
+
+          echo "Deployment successful!"
+          EOF
