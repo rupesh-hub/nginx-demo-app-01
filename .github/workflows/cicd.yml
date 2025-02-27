@@ -17,11 +17,6 @@ jobs:
         run: |
           echo "SSH Key (Base64): ${{ secrets.VM_SSH_KEY }}"
 
-      - name: Decode SSH Key
-        run: |
-          echo "${{ secrets.VM_SSH_KEY }}" | base64 --decode > id_rsa
-          chmod 600 id_rsa
-
       - name: Copy files to Azure VM and update Nginx
         env:
           VM_IP: ${{ secrets.VM_IP }}
