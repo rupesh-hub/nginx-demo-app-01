@@ -13,15 +13,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Decode SSH Key
+        run: |
+          echo "${{ secrets.VM_SSH_KEY }}" | base64 --decode > id_rsa
+          chmod 600 id_rsa
+
       - name: Copy files to Azure VM and update Nginx
         env:
           VM_IP: ${{ secrets.VM_IP }}
           VM_USER: ${{ secrets.VM_USER }}
-          VM_SSH_KEY: ${{ secrets.VM_SSH_KEY }}
         run: |
-          # SSH into the VM and deploy the application
-          ssh -o StrictHostKeyChecking=no -i $VM_SSH_KEY $VM_USER@$VM_IP << 'EOF'
-          # Stop the script if any command fails
+          ssh -o StrictHostKeyChecking=no -i id_rsa $VM_USER@$VM_IP << 'EOF'
           set -e
 
           # Clone or pull the latest code
@@ -31,7 +33,7 @@ jobs:
             git fetch --all
             git reset --hard origin/main
           else
-            git clone https://github.com/your-username/your-repo.git fullstack
+            git clone https://github.com/rupesh-hub/nginx-demo-app-01.git fullstack
             cd fullstack
           fi
 
