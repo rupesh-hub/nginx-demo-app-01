@@ -10,7 +10,7 @@ app.use(express.json());
 const PORT = process.env.PORT || 3001;
 
 app.get("/api/message", (req, res) => {
-  res.json({ message: "This is a ping message from backend!" });
+  res.json({ message: "This is a success message from backend (node js)!" });
 });
 
 app.listen(PORT, () => {
